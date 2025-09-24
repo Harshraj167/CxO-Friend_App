@@ -2,28 +2,56 @@ name: Frontend CI/CD
 
 on:
   push:
-    branches: [ "main" ]
-    paths:
-      - 'app/frontend/**'
+    branches:
+      - dev
+      - 'release/*'
+      - main
+  pull_request:
+    branches:
+      - dev
+      - 'release/*'
+      - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: '20.x'
 
       - name: Install dependencies
-        run: |
-          cd app/frontend
-          yarn install
+        run: npm install
 
-      - name: Build
-        run: |
-          cd app/frontend
-          yarn build
+      - name: Build project
+        run: npm run build
+
+      - name: Run tests
+        run: npm test --if-present
+
+  deploy:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to Vercel
+        run: npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
