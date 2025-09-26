@@ -1,16 +1,12 @@
-name: Frontend CI/CD
+name: Frontend CI
 
 on:
   push:
     branches:
-      - dev
-      - 'release/*'
       - main
+      - dev
+      - release/*
   pull_request:
-    branches:
-      - dev
-      - 'release/*'
-      - main
 
 jobs:
   build:
@@ -24,34 +20,22 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20.x'
+          cache: 'npm'
 
       - name: Install dependencies
-        run: npm install
+        run: |
+          npm install
 
-      - name: Build project
-        run: npm run build
+      - name: Run build
+        run: |
+          npm run build
 
-      - name: Run tests
-        run: npm test --if-present
+      # Optional – only if you want lint/test before deploy
+      # - name: Run tests
+      #   run: npm test
 
-  deploy:
-    if: github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Upload production-ready build
+        uses: actions/upload-artifact@v4
         with:
-          node-version: '20.x'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build project
-        run: npm run build
-
-      - name: Deploy to Vercel
-        run: npx vercel --prod --token=${{ secrets.VERCEL_TOKEN }}
+          name: frontend-build
+          path: build

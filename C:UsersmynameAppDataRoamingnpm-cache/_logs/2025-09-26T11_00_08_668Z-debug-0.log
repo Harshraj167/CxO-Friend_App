@@ -1,0 +1,159 @@
+0 verbose cli /usr/bin/node /usr/bin/npm
+1 info using npm@9.2.0
+2 info using node@v18.19.1
+3 timing npm:load:whichnode Completed in 1ms
+4 timing config:load:defaults Completed in 4ms
+5 timing config:load:file:/usr/share/nodejs/npm/npmrc Completed in 22ms
+6 timing config:load:builtin Completed in 24ms
+7 timing config:load:cli Completed in 19ms
+8 timing config:load:env Completed in 4ms
+9 timing config:load:file:/home/harshrajsinh/.cache/typescript/5.9/.npmrc Completed in 0ms
+10 timing config:load:project Completed in 8ms
+11 timing config:load:file:/home/harshrajsinh/.npmrc Completed in 3ms
+12 timing config:load:user Completed in 3ms
+13 timing config:load:file:/etc/npmrc Completed in 0ms
+14 timing config:load:global Completed in 1ms
+15 timing config:load:setEnvs Completed in 5ms
+16 timing config:load Completed in 69ms
+17 timing npm:load:configload Completed in 70ms
+18 timing npm:load:mkdirpcache Completed in 3ms
+19 timing npm:load:mkdirplogs Completed in 1ms
+20 verbose title npm install @types/react@ts5.9 @types/react-dom@ts5.9 @types/eslint-plugin-jsx-a11y@ts5.9 @types/progress@ts5.9
+21 verbose argv "install" "--ignore-scripts" "@types/react@ts5.9" "@types/react-dom@ts5.9" "@types/eslint-plugin-jsx-a11y@ts5.9" "@types/progress@ts5.9" "--save-dev" "--user-agent" "typesInstaller/5.9.2"
+22 timing npm:load:setTitle Completed in 7ms
+23 timing config:load:flatten Completed in 25ms
+24 timing npm:load:display Completed in 40ms
+25 verbose logfile logs-max:10 dir:/home/harshrajsinh/HARSH/CxO-Friend/CxO-Friend_App/C:UsersmynameAppDataRoamingnpm-cache/_logs/2025-09-26T11_00_08_668Z-
+26 verbose logfile /home/harshrajsinh/HARSH/CxO-Friend/CxO-Friend_App/C:UsersmynameAppDataRoamingnpm-cache/_logs/2025-09-26T11_00_08_668Z-debug-0.log
+27 timing npm:load:logFile Completed in 60ms
+28 timing npm:load:timers Completed in 0ms
+29 timing npm:load:configScope Completed in 0ms
+30 timing npm:load Completed in 184ms
+31 timing config:load:flatten Completed in 1ms
+32 timing arborist:ctor Completed in 1ms
+33 silly logfile done cleaning log files
+34 timing idealTree:init Completed in 74ms
+35 timing arborist:ctor Completed in 0ms
+36 http fetch GET 200 https://registry.npmjs.org/@types%2feslint-plugin-jsx-a11y 318ms (cache miss)
+37 http fetch GET 200 https://registry.npmjs.org/@types%2fprogress 325ms (cache miss)
+38 http fetch GET 200 https://registry.npmjs.org/@types%2freact-dom 364ms (cache miss)
+39 http fetch GET 200 https://registry.npmjs.org/@types%2freact 441ms (cache miss)
+40 timing idealTree:userRequests Completed in 503ms
+41 silly idealTree buildDeps
+42 silly fetch manifest @types/eslint-plugin-jsx-a11y@6.10.0
+43 silly fetch manifest @types/progress@2.0.7
+44 silly fetch manifest @types/react-dom@19.1.9
+45 silly fetch manifest @types/react@19.1.13
+46 silly placeDep ROOT @types/eslint-plugin-jsx-a11y@6.10.0 OK for:  want: 6.10.0
+47 silly placeDep ROOT @types/progress@2.0.7 OK for:  want: 2.0.7
+48 silly placeDep ROOT @types/react@19.1.13 OK for:  want: 19.1.13
+49 silly placeDep ROOT @types/react-dom@19.1.9 OK for:  want: 19.1.9
+50 silly fetch manifest @types/eslint@*
+51 silly fetch manifest @types/node@*
+52 silly fetch manifest csstype@^3.0.2
+53 http fetch GET 200 https://registry.npmjs.org/@types%2feslint 127ms (cache miss)
+54 http fetch GET 200 https://registry.npmjs.org/csstype 170ms (cache miss)
+55 http fetch GET 200 https://registry.npmjs.org/@types%2fnode 305ms (cache miss)
+56 timing idealTree:#root Completed in 362ms
+57 silly placeDep ROOT @types/eslint@9.6.1 OK for: @types/eslint-plugin-jsx-a11y@6.10.0 want: *
+58 silly fetch manifest @types/estree@*
+59 silly fetch manifest @types/json-schema@*
+60 http fetch GET 200 https://registry.npmjs.org/@types%2fjson-schema 68ms (cache miss)
+61 http fetch GET 200 https://registry.npmjs.org/@types%2festree 72ms (cache miss)
+62 timing idealTree:node_modules/@types/eslint-plugin-jsx-a11y Completed in 77ms
+63 silly placeDep ROOT @types/estree@1.0.8 OK for: @types/eslint@9.6.1 want: *
+64 silly placeDep ROOT @types/json-schema@7.0.15 OK for: @types/eslint@9.6.1 want: *
+65 timing idealTree:node_modules/@types/eslint Completed in 7ms
+66 timing idealTree:node_modules/@types/estree Completed in 0ms
+67 timing idealTree:node_modules/@types/json-schema Completed in 0ms
+68 silly placeDep ROOT @types/node@24.5.2 OK for: @types/progress@2.0.7 want: *
+69 silly fetch manifest undici-types@~7.12.0
+70 http fetch GET 200 https://registry.npmjs.org/undici-types 133ms (cache miss)
+71 timing idealTree:node_modules/@types/progress Completed in 154ms
+72 silly placeDep ROOT undici-types@7.12.0 OK for: @types/node@24.5.2 want: ~7.12.0
+73 timing idealTree:node_modules/@types/node Completed in 15ms
+74 silly placeDep ROOT csstype@3.1.3 OK for: @types/react@19.1.13 want: ^3.0.2
+75 timing idealTree:node_modules/@types/react Completed in 13ms
+76 timing idealTree:node_modules/@types/react-dom Completed in 0ms
+77 timing idealTree:node_modules/csstype Completed in 0ms
+78 timing idealTree:node_modules/undici-types Completed in 0ms
+79 timing idealTree:buildDeps Completed in 639ms
+80 timing idealTree:fixDepFlags Completed in 1ms
+81 timing idealTree Completed in 1222ms
+82 timing reify:loadTrees Completed in 1227ms
+83 timing reify:diffTrees Completed in 6ms
+84 silly reify moves {}
+85 timing reify:retireShallow Completed in 4ms
+86 timing reify:createSparse Completed in 6ms
+87 timing reify:loadBundles Completed in 0ms
+88 silly audit bulk request {
+88 silly audit   'types-registry': [ '0.1.739' ],
+88 silly audit   '@types/eslint-plugin-jsx-a11y': [ '6.10.0' ],
+88 silly audit   '@types/progress': [ '2.0.7' ],
+88 silly audit   '@types/react': [ '19.1.13' ],
+88 silly audit   '@types/react-dom': [ '19.1.9' ],
+88 silly audit   '@types/eslint': [ '9.6.1' ],
+88 silly audit   '@types/estree': [ '1.0.8' ],
+88 silly audit   '@types/json-schema': [ '7.0.15' ],
+88 silly audit   '@types/node': [ '24.5.2' ],
+88 silly audit   'undici-types': [ '7.12.0' ],
+88 silly audit   csstype: [ '3.1.3' ]
+88 silly audit }
+89 silly tarball no local data for csstype@https://registry.npmjs.org/csstype/-/csstype-3.1.3.tgz. Extracting by manifest.
+90 silly tarball no local data for undici-types@https://registry.npmjs.org/undici-types/-/undici-types-7.12.0.tgz. Extracting by manifest.
+91 silly tarball no local data for @types/node@https://registry.npmjs.org/@types/node/-/node-24.5.2.tgz. Extracting by manifest.
+92 silly tarball no local data for @types/json-schema@https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.15.tgz. Extracting by manifest.
+93 silly tarball no local data for @types/estree@https://registry.npmjs.org/@types/estree/-/estree-1.0.8.tgz. Extracting by manifest.
+94 silly tarball no local data for @types/eslint@https://registry.npmjs.org/@types/eslint/-/eslint-9.6.1.tgz. Extracting by manifest.
+95 silly tarball no local data for @types/react-dom@https://registry.npmjs.org/@types/react-dom/-/react-dom-19.1.9.tgz. Extracting by manifest.
+96 silly tarball no local data for @types/react@https://registry.npmjs.org/@types/react/-/react-19.1.13.tgz. Extracting by manifest.
+97 silly tarball no local data for @types/progress@https://registry.npmjs.org/@types/progress/-/progress-2.0.7.tgz. Extracting by manifest.
+98 silly tarball no local data for @types/eslint-plugin-jsx-a11y@https://registry.npmjs.org/@types/eslint-plugin-jsx-a11y/-/eslint-plugin-jsx-a11y-6.10.0.tgz. Extracting by manifest.
+99 http fetch POST 200 https://registry.npmjs.org/-/npm/v1/security/advisories/bulk 378ms
+100 timing auditReport:getReport Completed in 398ms
+101 silly audit report {}
+102 timing auditReport:init Completed in 0ms
+103 timing reify:audit Completed in 406ms
+104 http fetch GET 200 https://registry.npmjs.org/@types/progress/-/progress-2.0.7.tgz 361ms (cache miss)
+105 timing reifyNode:node_modules/@types/progress Completed in 411ms
+106 http fetch GET 200 https://registry.npmjs.org/@types/eslint-plugin-jsx-a11y/-/eslint-plugin-jsx-a11y-6.10.0.tgz 363ms (cache miss)
+107 timing reifyNode:node_modules/@types/eslint-plugin-jsx-a11y Completed in 435ms
+108 http fetch GET 200 https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.15.tgz 396ms (cache miss)
+109 timing reifyNode:node_modules/@types/json-schema Completed in 439ms
+110 http fetch GET 200 https://registry.npmjs.org/@types/estree/-/estree-1.0.8.tgz 399ms (cache miss)
+111 timing reifyNode:node_modules/@types/estree Completed in 442ms
+112 http fetch GET 200 https://registry.npmjs.org/@types/react-dom/-/react-dom-19.1.9.tgz 419ms (cache miss)
+113 timing reifyNode:node_modules/@types/react-dom Completed in 475ms
+114 http fetch GET 200 https://registry.npmjs.org/undici-types/-/undici-types-7.12.0.tgz 439ms (cache miss)
+115 timing reifyNode:node_modules/undici-types Completed in 483ms
+116 http fetch GET 200 https://registry.npmjs.org/@types/eslint/-/eslint-9.6.1.tgz 511ms (cache miss)
+117 timing reifyNode:node_modules/@types/eslint Completed in 556ms
+118 http fetch GET 200 https://registry.npmjs.org/csstype/-/csstype-3.1.3.tgz 529ms (cache miss)
+119 timing reifyNode:node_modules/csstype Completed in 565ms
+120 http fetch GET 200 https://registry.npmjs.org/@types/react/-/react-19.1.13.tgz 569ms (cache miss)
+121 timing reifyNode:node_modules/@types/react Completed in 615ms
+122 http fetch GET 200 https://registry.npmjs.org/@types/node/-/node-24.5.2.tgz 626ms (cache miss)
+123 timing reifyNode:node_modules/@types/node Completed in 665ms
+124 timing reify:unpack Completed in 667ms
+125 timing reify:unretire Completed in 0ms
+126 timing build:queue Completed in 3ms
+127 timing build:deps Completed in 4ms
+128 timing build Completed in 5ms
+129 timing reify:build Completed in 6ms
+130 timing reify:trash Completed in 0ms
+131 timing reify:save Completed in 18ms
+132 timing reify Completed in 1995ms
+133 silly ADD node_modules/csstype
+134 silly ADD node_modules/undici-types
+135 silly ADD node_modules/@types/node
+136 silly ADD node_modules/@types/json-schema
+137 silly ADD node_modules/@types/estree
+138 silly ADD node_modules/@types/eslint
+139 silly ADD node_modules/@types/react-dom
+140 silly ADD node_modules/@types/react
+141 silly ADD node_modules/@types/progress
+142 silly ADD node_modules/@types/eslint-plugin-jsx-a11y
+143 timing command:install Completed in 2007ms
+144 verbose exit 0
+145 timing npm Completed in 2224ms
+146 info ok
