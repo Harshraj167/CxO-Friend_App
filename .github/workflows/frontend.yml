@@ -1,29 +1,41 @@
-name: Frontend CI/CD
+name: Frontend CI
 
 on:
   push:
-    branches: [ "main" ]
-    paths:
-      - 'app/frontend/**'
+    branches:
+      - main
+      - dev
+      - release/*
+  pull_request:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 20.x
+          node-version: '20.x'
+          cache: 'npm'
 
       - name: Install dependencies
         run: |
-          cd app/frontend
-          yarn install
+          npm install
 
-      - name: Build
+      - name: Run build
         run: |
-          cd app/frontend
-          yarn build
+          npm run build
+
+      # Optional – only if you want lint/test before deploy
+      # - name: Run tests
+      #   run: npm test
+
+      - name: Upload production-ready build
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: build
