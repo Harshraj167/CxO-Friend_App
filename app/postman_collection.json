@@ -1,0 +1,9 @@
+{
+  "info": {
+    "name": "CXO-Friend v6.3.0 API Collection"
+  },
+  "item": [
+    { "name": "Health Check", "request": { "method": "GET", "url": "{{base_url}}/health" } },
+    { "name": "AI Chat", "request": { "method": "POST", "url": "{{base_url}}/api/ai/chat" } }
+  ]
+}

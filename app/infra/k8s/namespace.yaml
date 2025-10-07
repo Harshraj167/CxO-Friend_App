@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: cxo-friend
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: env-vars
+  namespace: cxo-friend
+type: Opaque
+stringData:
+  DATABASE_URL: "postgresql://user:pass@postgres:5432/cxofriend"
+  JWT_SECRET: "<your_jwt_secret>"
+  OLLAMA_URL: "http://ollama:11434"
+  DEFAULT_AI_PROVIDER: "perplexity"
+  FRONTEND_URL: "https://app.cxofriend.com"

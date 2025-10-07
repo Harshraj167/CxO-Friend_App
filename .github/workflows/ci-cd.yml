@@ -1,0 +1,52 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Install & Lint Backend
+        working-directory: app/backend
+        run: |
+          npm ci
+          npm run lint
+
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: pass
+          POSTGRES_DB: cxofriend_test
+        ports:
+          - '5433:5432'
+        options: >-
+          --health-cmd="pg_isready -U user -d cxofriend_test"
+          --health-interval=10s
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+      - name: Setup Backend
+        working-directory: app/backend
+        env:
+          DATABASE_URL: postgres://user:pass@localhost:5433/cxofriend_test
+        run: |
+          npm ci
+          npx prisma migrate deploy
+          npm run test

@@ -1,0 +1,234 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  admin
+  cxo
+  manager
+  employee
+  viewer
+}
+
+enum Plan {
+  free
+  pro
+  enterprise
+}
+
+enum LearningPhase {
+  observation
+  analysis
+  optimization
+  autonomous
+}
+
+enum AIProvider {
+  perplexity
+  ollama
+}
+
+enum AIPersona {
+  cofounder   @map("co-founder")
+  cmo
+  cfo
+  coo
+  cto
+  cpo
+  cso
+}
+
+enum SessionStatus {
+  active
+  archived
+}
+
+enum NotificationType {
+  ai_response
+  workflow_completed
+  task_assigned
+  approval_required
+  system_alert
+  invitation
+}
+
+model User {
+  id              String            @id @default(uuid())
+  email           String            @unique
+  emailVerified   Boolean           @default(false)
+  displayName     String
+  photoURL        String?
+  phoneNumber     String?
+  passwordHash    String?
+  role            Role              @default(cxo)
+  plan            Plan              @default(enterprise)
+  onboarded       Boolean           @default(false)
+  preferences     Json
+  organizationId  String?
+  organization    Organization?     @relation(fields: [organizationId], references: [id])
+  learningProfile LearningProfile?
+  aiSessions      AISession[]
+  aiMessages      AIMessage[]
+  permissions     UserPermission[]
+  notifications   Notification[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  deleted         Boolean           @default(false)
+  deletedAt       DateTime?
+}
+
+model Organization {
+  id              String            @id @default(uuid())
+  name            String
+  domain          String?
+  website         String?
+  logoUrl         String?
+  industry        String
+  size            Int
+  plan            Plan              @default(enterprise)
+  settings        Json
+  featureFlags    Json
+  customBranding  Json?
+  ownerId         String
+  owner           User              @relation(fields: [ownerId], references: [id])
+  members         OrganizationMember[]
+  aiSessions      AISession[]
+  notifications   Notification[]
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+}
+
+model OrganizationMember {
+  id             String       @id @default(uuid())
+  organization   Organization @relation(fields: [organizationId], references: [id])
+  organizationId String
+  user           User         @relation(fields: [userId], references: [id])
+  userId         String
+  role           Role
+  department     String
+  status         String
+  invitedBy      String
+  joinedAt       DateTime     @default(now())
+}
+
+model LearningProfile {
+  userId        String         @id
+  user          User           @relation(fields: [userId], references: [id])
+  phase         LearningPhase  @default(observation)
+  progress      Float          @default(0)
+  interactions  Int            @default(0)
+  patterns      Json
+  insights      Json
+  preferences   Json
+  updatedAt     DateTime       @updatedAt
+}
+
+model AISession {
+  id         String       @id
+  userId     String
+  user       User         @relation(fields: [userId], references: [id])
+  module     String
+  persona    AIPersona
+  status     SessionStatus @default(active)
+  title      String
+  messages   AIMessage[]
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+}
+
+model AIMessage {
+  id          String    @id
+  sessionId   String
+  session     AISession @relation(fields: [sessionId], references: [id])
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  role        String
+  content     String    @db.Text
+  metadata    Json
+  createdAt   DateTime  @default(now())
+}
+
+model AIFeedback {
+  id         String    @id @default(uuid())
+  messageId  String
+  message    AIMessage @relation(fields: [messageId], references: [id])
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  rating     Int
+  feedback   String?
+  helpful    Boolean
+  createdAt  DateTime  @default(now())
+}
+
+model Workflow {
+  id          String            @id @default(uuid())
+  userId      String
+  user        User              @relation(fields: [userId], references: [id])
+  name        String
+  definition  Json
+  executions  WorkflowExecution[]
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+}
+
+model WorkflowExecution {
+  id          String    @id @default(uuid())
+  workflowId  String
+  workflow    Workflow  @relation(fields: [workflowId], references: [id])
+  status      String
+  resultData  Json?
+  startedAt   DateTime  @default(now())
+  completedAt DateTime?
+}
+
+model Notification {
+  id             String            @id @default(uuid())
+  userId         String
+  user           User              @relation(fields: [userId], references: [id])
+  organizationId String?
+  organization   Organization?     @relation(fields: [organizationId], references: [id])
+  type           NotificationType
+  title          String
+  message        String
+  data           Json?
+  actionUrl      String?
+  priority       String
+  read           Boolean           @default(false)
+  readAt         DateTime?
+  createdAt      DateTime          @default(now())
+}
+
+model FeatureFlag {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  enabled   Boolean
+  global    Boolean  @default(false)
+  conditions Json?
+  rolloutPercentage Int?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model UserPermission {
+  id         String  @id @default(uuid())
+  userId     String
+  user       User    @relation(fields: [userId], references: [id])
+  permission String
+}
+
+model FileUpload {
+  id         String   @id @default(uuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id])
+  url        String
+  filename   String
+  mimeType   String
+  size       Int
+  metadata   Json?
+  createdAt  DateTime @default(now())
+}
