@@ -1,1 +1,5 @@
-.env
+# Ignore system and npm cache folders
+npm-cache/
+C:Users*/
+AppData/
+Roaming/
