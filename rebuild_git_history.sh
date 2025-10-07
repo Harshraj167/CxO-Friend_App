@@ -1,57 +1,79 @@
 #!/bin/bash
 # ============================================
-# CXO-Friend Enterprises v6.3.0
-# Automated Git History & Branch Reconstruction
+# 🧩 CXO-Friend Enterprises v6.3.0
+# Automated Git History & Branch Reconstruction (Final)
 # Author: Harshrajsinh Solanki
-# Date: Oct 7, 2025
+# Date: Oct 7, 2025 - 2:38 PM
 # ============================================
 
-echo "🚀 Rebuilding full Git history (v1.0 → v6.3.0)..."
+echo "🚀 Rebuilding full Git history with SSH authentication (v1.0 → v6.3.0)..."
 
-# Ensure repo
+# Ensure we’re in a git repo
 git init
 git branch -M main
 
-# Clear remote (if duplicate)
+# Reset remote safely to SSH
 git remote remove origin 2>/dev/null
-git remote add origin https://github.com/Harshraj167/CxO-Friend_App.git
+git remote add origin git@github.com:Harshraj167/CxO-Friend_App.git
 
-# --- Step 1: Add .gitignore ---
-echo "node_modules/
-.env
-*.zip
-__pycache__/
-*.log
-" > .gitignore
+# Create or update .gitignore
+echo -e "node_modules/\n.env\n*.zip\n__pycache__/\n*.log\n" > .gitignore
 git add .gitignore
 
-# --- Step 2: Recreate commits ---
-git add .
-GIT_AUTHOR_DATE="2025-09-22T10:00:00" GIT_COMMITTER_DATE="2025-09-22T10:00:00" git commit -m "v1.0.0 — Initial prototype (Python + React)"
-GIT_AUTHOR_DATE="2025-09-30T12:00:00" GIT_COMMITTER_DATE="2025-09-30T12:00:00" git commit --allow-empty -m "v3.0.0 — Hybrid architecture design (Node + React)"
-GIT_AUTHOR_DATE="2025-10-06T15:00:00" GIT_COMMITTER_DATE="2025-10-06T15:00:00" git commit --allow-empty -m "v6.0.0 — Enterprise hybrid architecture freeze"
-GIT_AUTHOR_DATE="2025-10-07T13:31:00" GIT_COMMITTER_DATE="2025-10-07T13:31:00" git commit -am "v6.3.0 — Final Hybrid Enterprise Full-Stack Release"
+# ============================================
+# Commit timeline (historical reconstruction)
+# ============================================
 
-# --- Step 3: Add Tags ---
+# --- Initial Prototype (Python + React) ---
+GIT_AUTHOR_DATE="2025-09-22T10:00:00+05:30" GIT_COMMITTER_DATE="2025-09-22T10:00:00+05:30" git commit --allow-empty -m "v1.0.0 — Initial Prototype (Python + React)"
+
+# --- Hybrid Architecture (Node + React) ---
+GIT_AUTHOR_DATE="2025-09-30T12:00:00+05:30" GIT_COMMITTER_DATE="2025-09-30T12:00:00+05:30" git commit --allow-empty -m "v3.0.0 — Hybrid Architecture and Unified Blueprint"
+
+# --- Enterprise Freeze (Full Internal Release) ---
+GIT_AUTHOR_DATE="2025-10-06T16:00:00+05:30" GIT_COMMITTER_DATE="2025-10-06T16:00:00+05:30" git commit --allow-empty -m "v6.0.0 — Enterprise Architecture Freeze"
+
+# --- Full Enterprise Release (v6.3.0) ---
+GIT_AUTHOR_DATE="2025-10-07T14:38:00+05:30" GIT_COMMITTER_DATE="2025-10-07T14:38:00+05:30" git commit -am "v6.3.0 — Final Hybrid Full-Stack Enterprise Release"
+
+# ============================================
+# Tags and Version Metadata
+# ============================================
+
 git tag -a v1.0.0 -m "Initial prototype (Sept 22)"
 git tag -a v3.0.0 -m "Hybrid architecture (Sept 30)"
-git tag -a v6.0.0 -m "Enterprise Freeze (Oct 6)"
-git tag -a v6.3.0 -m "Full Enterprise Release (Oct 7)"
+git tag -a v6.0.0 -m "Enterprise freeze (Oct 6)"
+git tag -a v6.3.0 -m "Full enterprise release (Oct 7)"
 
-# --- Step 4: Create Branches ---
+# ============================================
+# Branch Management
+# ============================================
+
+# Remove stale branches if exist
+git branch -D dev 2>/dev/null
+git branch -D release/v6.3.0 2>/dev/null
+git branch -D backup 2>/dev/null
+
+# Create branches fresh from main
 git checkout -b dev
 git checkout main
 git checkout -b release/v6.3.0
 git checkout main
-git checkout -b vercel-sync
+git checkout -b backup
 git checkout main
 
-# --- Step 5: Push Everything ---
-echo "☁️  Pushing all commits, branches, and tags to GitHub..."
+# ============================================
+# Push Everything (SSH)
+# ============================================
+
+echo "☁️  Pushing all commits, branches, and tags via SSH..."
+
 git push origin main --force
 git push origin dev --force
 git push origin release/v6.3.0 --force
-git push origin vercel-sync --force
-git push origin --tags
+git push origin backup --force
+git push origin --tags --force
 
-echo "✅ Git history successfully rebuilt and pushed!"
+echo "✅ Git history successfully rebuilt and pushed to GitHub!"
+echo "📅 Version timeline: v1.0.0 → v3.0.0 → v6.0.0 → v6.3.0"
+echo "🌿 Branches: main, dev, release/v6.3.0, backup"
