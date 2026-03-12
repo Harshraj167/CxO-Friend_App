@@ -19,6 +19,8 @@ import workflowRoutes from './routes/workflows'
 import analyticsRoutes from './routes/analytics'
 import notificationRoutes from './routes/notifications'
 import uploadRoutes from './routes/uploads'
+import eigRoutes from './routes/eig'
+import webhookRoutes from './routes/webhooks'
 
 // Import middleware
 import { authenticateToken } from './middleware/auth'
@@ -178,6 +180,8 @@ app.use('/api/workflows', authenticateToken, workflowRoutes)
 app.use('/api/analytics', authenticateToken, analyticsRoutes)
 app.use('/api/notifications', authenticateToken, notificationRoutes)
 app.use('/api/uploads', authenticateToken, uploadRoutes)
+app.use('/api/eig', eigRoutes)
+app.use('/api/webhooks', webhookRoutes)
 
 // Anti-Gravity: Proxy AI Dispatcher (Python Orchestrator)
 app.use('/api/orchestrator', authenticateToken, async (req, res) => {

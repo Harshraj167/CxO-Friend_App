@@ -26,15 +26,8 @@ export class AIService extends EventEmitter {
   constructor() {
     super()
     this.config = {
-      perplexity: {
-        apiKey: process.env.PERPLEXITY_API_KEY || '',
-        baseUrl: 'https://api.perplexity.ai',
-        model: 'llama-3.1-sonar-large-128k-online'
-      },
-      ollama: {
-        baseUrl: process.env.OLLAMA_URL || 'http://localhost:11434',
-        model: 'llama3.2'
-      },
+      orchestratorUrl: process.env.PYTHON_ORCHESTRATOR_URL || 'http://localhost:8000',
+      internalServiceKey: process.env.INTERNAL_SERVICE_KEY || 'default_internal_key',
       defaultProvider: process.env.DEFAULT_AI_PROVIDER || 'perplexity',
       features: {
         voiceEnabled: process.env.ENABLE_VOICE_FEATURES === 'true',
@@ -48,14 +41,19 @@ export class AIService extends EventEmitter {
   }
 
   async initialize(): Promise<void> {
-    logger.info('Initializing AI Service...')
+    logger.info('Initializing AI Service via Python Orchestrator...')
     try {
-      if (this.config.perplexity.apiKey) {
-        await this.initializePerplexity()
-        logger.info('✅ Perplexity AI initialized')
+      const response = await axios.get(`${this.config.orchestratorUrl}/health`)
+      if (response.data.status === 'online') {
+        this.providers.set('orchestrator', { status: 'online', lastCheck: new Date() })
+        logger.info('✅ Python Orchestrator initialized')
       }
-      await this.initializeOllama()
-      logger.info('✅ Ollama initialized')
+    } catch (error:any) {
+      logger.warn('Failed to reach Python Orchestrator. Is it running?', error?.message)
+      this.providers.set('orchestrator', { status: 'offline', lastCheck: new Date(), error: error?.message })
+    }
+
+    try {
       if (this.config.features.learningEnabled) {
         await this.initializeLearningSystem()
         logger.info('✅ Learning system initialized')
@@ -67,30 +65,7 @@ export class AIService extends EventEmitter {
     }
   }
 
-  private async initializePerplexity(): Promise<void> {
-    try {
-      const response = await axios.get(`${this.config.perplexity.baseUrl}/models`, {
-        headers: {
-          'Authorization': `Bearer ${this.config.perplexity.apiKey}`
-        },
-        timeout: 10000
-      })
-      this.providers.set('perplexity', { status: 'online', models: response.data, lastCheck: new Date() })
-    } catch (error:any) {
-      logger.warn('Perplexity initialization failed:', error?.message || error)
-      this.providers.set('perplexity', { status: 'offline', error: error?.message, lastCheck: new Date() })
-    }
-  }
-
-  private async initializeOllama(): Promise<void> {
-    try {
-      const response = await axios.get(`${this.config.ollama.baseUrl}/api/tags`, { timeout: 10000 })
-      this.providers.set('ollama', { status: 'online', models: response.data.models, lastCheck: new Date() })
-    } catch (error:any) {
-      logger.warn('Ollama initialization failed:', error?.message || error)
-      this.providers.set('ollama', { status: 'offline', error: error?.message, lastCheck: new Date() })
-    }
-  }
+  // Legacy initializePerplexity and initializeOllama removed in favor of Python Orchestrator
 
   private async initializeLearningSystem(): Promise<void> {
     // Attempt to load learning profiles (best-effort)
@@ -127,10 +102,12 @@ export class AIService extends EventEmitter {
 
   async sendMessage(userId: string, sessionId: string, message: string, options: any = {}): Promise<AIMessage> {
     const start = Date.now()
-    const provider = options.provider || this.config.defaultProvider
     const persona = options.persona || 'co-founder'
+    const contextTag = options.contextTag || 'Idea' // From ContextRouter
+    
     try {
       const session = await this.getOrCreateSession(userId, sessionId, persona)
+      
       const userMessage: AIMessage = {
         id: `msg_${Date.now()}_user`,
         role: 'user',
@@ -138,26 +115,47 @@ export class AIService extends EventEmitter {
         timestamp: new Date(),
         sessionId,
         userId,
-        metadata: { ...options.metadata, provider, persona }
+        metadata: { ...options.metadata, persona, contextTag }
       }
       await this.storeMessage(userMessage)
+      
+      // Call Python Orchestrator
+      const response = await axios.post(`${this.config.orchestratorUrl}/api/ai/chat`, {
+        user_id: userId,
+        session_id: sessionId,
+        message: message,
+        persona: persona
+      }, {
+        headers: {
+          'Authorization': `Bearer ${this.config.internalServiceKey}`
+        }
+      });
+      
+      const pythonData = response.data.data;
+
       let aiResponse: AIMessage = {
         id: `msg_${Date.now()}_ai`,
         role: 'assistant',
-        content: `Simulated response to "${message}" by ${provider}`,
+        content: pythonData.reply,
         timestamp: new Date(),
         sessionId,
         userId,
-        metadata: { provider, persona }
+        metadata: { 
+            provider: pythonData.source, 
+            model: pythonData.model, 
+            persona,
+            processingTime: Date.now() - start
+        }
       }
-      // Add processing metadata
-      aiResponse.metadata = { ...aiResponse.metadata, processingTime: Date.now() - start, confidence: 0.8 }
+      
       await this.storeMessage(aiResponse)
+      
       // Update session context
       session.context.push({ role: 'user', content: message })
       session.context.push({ role: 'assistant', content: aiResponse.content })
       if (session.context.length > 20) session.context = session.context.slice(-16)
       this.activeSessions.set(sessionId, session)
+      
       return aiResponse
     } catch (error:any) {
       logger.error('AIService.sendMessage error:', error?.message || error)
