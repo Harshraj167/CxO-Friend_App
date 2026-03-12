@@ -7,13 +7,14 @@ import morgan from 'morgan'
 import dotenv from 'dotenv'
 import { createServer } from 'http'
 import { Server as SocketIOServer } from 'socket.io'
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@cxofriend/db'
 
 // Import routes
 import authRoutes from './routes/auth'
 import userRoutes from './routes/users'
 import organizationRoutes from './routes/organizations'
 import aiRoutes from './routes/ai'
+import axios from 'axios'
 import workflowRoutes from './routes/workflows'
 import analyticsRoutes from './routes/analytics'
 import notificationRoutes from './routes/notifications'
@@ -178,6 +179,27 @@ app.use('/api/analytics', authenticateToken, analyticsRoutes)
 app.use('/api/notifications', authenticateToken, notificationRoutes)
 app.use('/api/uploads', authenticateToken, uploadRoutes)
 
+// Anti-Gravity: Proxy AI Dispatcher (Python Orchestrator)
+app.use('/api/orchestrator', authenticateToken, async (req, res) => {
+  try {
+    const orchestratorUrl = process.env.ORCHESTRATOR_URL || 'http://localhost:8001';
+    const response = await axios({
+      method: req.method,
+      url: `${orchestratorUrl}${req.path}`,
+      data: req.body,
+      params: req.query,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.INTERNAL_SERVICE_KEY}`
+      }
+    });
+    res.status(response.status).json(response.data);
+  } catch (error: any) {
+    logger.error('Orchestrator Proxy Error:', error.message);
+    res.status(error.response?.status || 500).json(error.response?.data || { error: 'Orchestrator communication failed' });
+  }
+})
+
 // Static file serving for uploads
 app.use('/uploads', express.static(process.env.UPLOAD_PATH || './uploads'))
 
@@ -282,7 +304,7 @@ process.on('SIGINT', () => gracefulShutdown('SIGINT'))
 // Start server
 const PORT = process.env.PORT || 8000
 server.listen(PORT, () => {
-  logger.info(`🚀 CXO-Friend Server v6.3.0 running on port ${PORT}`)
+  logger.info(`🚀 CXO-Friend Server v6.5.1 (Anti-Gravity) running on port ${PORT}`)
   logger.info(`📊 Environment: ${process.env.NODE_ENV || 'development'}`)
   logger.info(`🤖 AI Services: Initializing...`)
   

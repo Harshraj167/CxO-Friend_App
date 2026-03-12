@@ -1,0 +1,16 @@
+{
+  "name": "cxofriend-workspace",
+  "version": "6.5.1",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm -r --parallel run dev",
+    "build": "pnpm -r run build",
+    "lint": "pnpm -r run lint",
+    "db:generate": "pnpm --filter @cxofriend/db run db:generate",
+    "db:migrate": "pnpm --filter @cxofriend/db run db:migrate",
+    "db:seed": "pnpm --filter @cxofriend/db run db:seed"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

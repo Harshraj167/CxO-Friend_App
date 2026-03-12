@@ -1,0 +1,39 @@
+{
+  "app_name": "CxO-Friend Enterprises",
+  "version_internal": "6.5.1",
+  "version_public": "3.5.1",
+  "architecture": "Anti-Gravity Polyglot Hybrid (Thinker-Doer)",
+  "frontend": {
+    "framework": "React 19 + Vite + Vercel Agentic SDK",
+    "ui_library": "Tailwind + shadcn/ui + Material Design 3",
+    "rendering": "Dynamic Streaming Cards",
+    "mobile": "Flutter + Tauri/Electron Desktop Bridge"
+  },
+  "backend": {
+    "gateway": "Node.js (Express + Socket.IO)",
+    "microservices": ["Python FastAPI", "Java Spring Boot", "Go"],
+    "database": {
+      "primary": "PostgreSQL (Prisma ORM)",
+      "memory": "Firebase Firestore",
+      "cache": "Redis + BullMQ",
+      "semantic": "Milvus / Weaviate"
+    }
+  },
+  "ai_orchestration": {
+    "router": "0-1-0-1 Dispatcher",
+    "thinker": ["OpenRouter (Mistral/Llama3)", "Perplexity Pro"],
+    "doer": ["n8n CE", "Ollama Local", "TensorFlow.js"],
+    "language_layer": "Hinglish/Transliteration Normalizer"
+  },
+  "feature_flags": {
+    "enable_anti_gravity_ui": true,
+    "enable_hybrid_ai_routing": true,
+    "enable_voice_boardroom": true,
+    "enable_local_ollama": true,
+    "enable_creator_studio": true,
+    "enable_xr_spatial_dashboard": true
+  },
+  "modules": [
+    "Marketing", "HR", "Finance", "Operations", "Tech", "Support", "Creator"
+  ]
+}

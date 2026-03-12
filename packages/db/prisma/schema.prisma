@@ -76,6 +76,7 @@ model User {
   aiMessages      AIMessage[]
   permissions     UserPermission[]
   notifications   Notification[]
+  tasks           Task[]
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
   deleted         Boolean           @default(false)
@@ -99,6 +100,10 @@ model Organization {
   members         OrganizationMember[]
   aiSessions      AISession[]
   notifications   Notification[]
+  tasks           Task[]
+  publicPortals   PublicPortal[]
+  customers       Customer[]
+  vendors         Vendor[]
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
 }
@@ -231,4 +236,52 @@ model FileUpload {
   size       Int
   metadata   Json?
   createdAt  DateTime @default(now())
+}
+
+model Task {
+  id           String   @id @default(uuid())
+  title        String
+  description  String?
+  status       String   @default("pending")
+  orgId        String
+  organization Organization @relation(fields: [orgId], references: [id])
+  assigneeId   String?
+  assignee     User?    @relation(fields: [assigneeId], references: [id])
+  tat_expected Int?     // Turnaround Time Expected (in minutes or hours)
+  tat_actual   Int?     // Turnaround Time Actual
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model PublicPortal {
+  id          String   @id @default(uuid())
+  orgId       String
+  organization Organization @relation(fields: [orgId], references: [id])
+  slug        String   @unique
+  title       String
+  branding    Json?    // Custom logo, colors
+  domain      String?  // Custom domain routing
+  published   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+}
+
+model Customer {
+  id           String   @id @default(uuid())
+  orgId        String
+  organization Organization @relation(fields: [orgId], references: [id])
+  name         String
+  email        String
+  interactions Json?    // AI summarized contact logs
+  createdAt    DateTime @default(now())
+}
+
+model Vendor {
+  id           String   @id @default(uuid())
+  orgId        String
+  organization Organization @relation(fields: [orgId], references: [id])
+  name         String
+  contractId   String?
+  invoices     Json?
+  riskScore    Float?   // AI calculated vendor reliability
+  createdAt    DateTime @default(now())
 }

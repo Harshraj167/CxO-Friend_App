@@ -1,5 +1,5 @@
 import { EventEmitter } from 'events'
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@cxofriend/db'
 import { logger } from '../utils/logger'
 
 const prisma = new PrismaClient()

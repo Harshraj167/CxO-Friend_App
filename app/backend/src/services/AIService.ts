@@ -2,7 +2,7 @@
 import axios from 'axios'
 import { EventEmitter } from 'events'
 import { logger } from '../utils/logger'
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@cxofriend/db'
 import { AIProvider, AIPersona } from '../types' // types.ts placeholder (you can add)
 
 const prisma = new PrismaClient()
