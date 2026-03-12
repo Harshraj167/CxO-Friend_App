@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "pnpm -r --parallel run dev",
     "build": "pnpm -r run build",
+    "build:frontend": "pnpm --filter app/frontend run build",
+    "build:backend": "pnpm --filter app/backend run build",
     "lint": "pnpm -r run lint",
     "db:generate": "pnpm --filter @cxofriend/db run db:generate",
     "db:migrate": "pnpm --filter @cxofriend/db run db:migrate",

@@ -1,0 +1,47 @@
+services:
+  # Node.js API Gateway
+  - type: web
+    name: cxo-api-gateway
+    env: node
+    buildCommand: pnpm install && pnpm build:backend
+    startCommand: cd app/backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: ORCHESTRATOR_URL
+        value: https://cxo-orchestrator.onrender.com
+      - key: DATABASE_URL
+        fromDatabase:
+          name: cxo-db
+          property: connectionString
+      - key: JWT_SECRET
+        generateValue: true
+      - key: INTERNAL_SERVICE_KEY
+        generateValue: true
+
+  # Python AI Orchestrator
+  - type: web
+    name: cxo-orchestrator
+    env: python
+    buildCommand: cd services/ai-orchestrator && pip install -r requirements.txt
+    startCommand: cd services/ai-orchestrator && uvicorn src.main:app --host 0.0.0.0 --port 10000
+    envVars:
+      - key: PORT
+        value: 10000
+      - key: INTERNAL_SERVICE_KEY
+        fromService:
+          type: web
+          name: cxo-api-gateway
+          envVarKey: INTERNAL_SERVICE_KEY
+      - key: OPENROUTER_KEY_1
+        sync: false
+      - key: OPENROUTER_KEY_2
+        sync: false
+
+databases:
+  - name: cxo-db
+    databaseName: cxofriend
+    user: cxoadmin
+    plan: free

@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "buildCommand": "cd ../.. && pnpm install && pnpm build:frontend",
+  "outputDirectory": "app/frontend/dist",
+  "framework": "vite",
+  "installCommand": "npm install -g pnpm@9.12.0",
+  "rewrites": [
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
+  ]
+}
