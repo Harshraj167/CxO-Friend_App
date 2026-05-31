@@ -28,7 +28,7 @@ export class AIService extends EventEmitter {
     this.config = {
       orchestratorUrl: process.env.PYTHON_ORCHESTRATOR_URL || 'http://localhost:8000',
       internalServiceKey: process.env.INTERNAL_SERVICE_KEY || 'default_internal_key',
-      defaultProvider: process.env.DEFAULT_AI_PROVIDER || 'perplexity',
+      defaultProvider: process.env.DEFAULT_AI_PROVIDER || 'gemini',
       features: {
         voiceEnabled: process.env.ENABLE_VOICE_FEATURES === 'true',
         learningEnabled: process.env.ENABLE_LEARNING_SYSTEM === 'true',

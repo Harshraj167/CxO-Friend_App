@@ -29,7 +29,7 @@ enum LearningPhase {
 }
 
 enum AIProvider {
-  perplexity
+  gemini
   ollama
 }
 

@@ -21,7 +21,7 @@
   },
   "ai_orchestration": {
     "router": "0-1-0-1 Dispatcher",
-    "thinker": ["OpenRouter (Mistral/Llama3)", "Perplexity Pro"],
+    "thinker": ["OpenRouter (Mistral/Llama3)", "Google Gemini"],
     "doer": ["n8n CE", "Ollama Local", "TensorFlow.js"],
     "language_layer": "Hinglish/Transliteration Normalizer"
   },

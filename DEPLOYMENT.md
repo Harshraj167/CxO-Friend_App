@@ -13,7 +13,7 @@ When importing the repository into Vercel, it should automatically detect the `v
 Inside the Render dashboard, click "New -> Blueprint" and connect this GitHub repository. Render will read the `render.yaml` file and automatically provision the Node.js Gateway, Python Orchestrator, and a PostgreSQL database.
 
 **Required Environment Variables in Render (Environment Group):**
-- `PERPLEXITY_API_KEY`: Your paid Perplexity API key.
+- `GEMINI_API_KEY`: Your official Google Gemini API Key (gemini-1.5-flash default).
 - `OPENROUTER_KEY_1`: Your primary OpenRouter API Key (e.g., Mistral/Mixtral).
 - `OPENROUTER_KEY_2`: A secondary OpenRouter API key for the 0-1-0-1 load balancer fallback.
 - `FRONTEND_URL`: The public URL given to you by Vercel for CORS validation.

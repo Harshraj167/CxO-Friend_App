@@ -1,4 +1,4 @@
-export type AIProvider = 'perplexity' | 'ollama'
+export type AIProvider = 'gemini' | 'ollama'
 export type AIPersona = 'co-founder' | 'cmo' | 'cfo' | 'coo' | 'cto' | 'cpo' | 'cso'
 export type LearningPhase = 'observation' | 'analysis' | 'optimization' | 'autonomous'
 export interface AIMessage {

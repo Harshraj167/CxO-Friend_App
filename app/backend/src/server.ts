@@ -67,7 +67,7 @@ app.use(helmet({
       fontSrc: ["'self'", "https://fonts.gstatic.com"],
       imgSrc: ["'self'", "data:", "https:", "blob:"],
       scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-      connectSrc: ["'self'", "ws:", "wss:", "https://api.perplexity.ai", "http://localhost:11434"]
+      connectSrc: ["'self'", "ws:", "wss:", "https://generativelanguage.googleapis.com", "http://localhost:11434"]
     }
   }
 }))
@@ -156,7 +156,7 @@ app.get('/api/version', (req, res) => {
     name: 'CXO-Friend Enterprises',
     description: 'AI-powered business automation platform',
     features: [
-      'Hybrid AI (Perplexity + Ollama)',
+      'Hybrid AI (Gemini + Ollama)',
       'Voice Communication',
       'Learning Phase System',
       'Enterprise Security',
