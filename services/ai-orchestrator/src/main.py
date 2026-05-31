@@ -3,6 +3,7 @@ from pydantic import BaseModel
 import os
 
 from src.dispatcher import Dispatcher0101, AIRequest
+from src.antigravity_agent import AntigravityAgentOrchestrator
 
 app = FastAPI(
     title="CxO-Friend AI Orchestrator",
@@ -10,6 +11,11 @@ app = FastAPI(
 )
 
 dispatcher = Dispatcher0101()
+antigravity_orchestrator = AntigravityAgentOrchestrator()
+
+class AgentExecuteRequest(BaseModel):
+    prompt: str
+    taskId: str = None
 
 @app.middleware("http")
 async def verify_internal_auth(request: Request, call_next):
@@ -36,6 +42,14 @@ async def process_chat(req: AIRequest):
     try:
         # Utilize the 0-1-0-1 Load balancer
         result = await dispatcher.execute(req)
+        return {"status": "success", "data": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/ai/agent-execute")
+async def process_agent_execute(req: AgentExecuteRequest):
+    try:
+        result = await antigravity_orchestrator.execute_task(req.prompt)
         return {"status": "success", "data": result}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

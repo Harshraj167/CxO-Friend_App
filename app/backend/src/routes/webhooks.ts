@@ -70,4 +70,39 @@ router.post('/n8n/trigger', authenticateToken, async (req, res) => {
   }
 });
 
+// Antigravity Agent Trigger: Expose direct trigger calling Google Antigravity SDK Agent
+router.post('/agent/trigger', authenticateToken, async (req, res) => {
+  try {
+    const { actionName, payload, targetTaskId } = req.body;
+    const orchestratorUrl = process.env.ORCHESTRATOR_URL || 'http://localhost:8000';
+    const internalKey = process.env.INTERNAL_SERVICE_KEY || 'default_internal_key';
+    
+    logger.info(`Triggering Antigravity SDK Agent for action: ${actionName}`);
+    
+    // Construct task execution prompt for the Antigravity Agent
+    const prompt = `Antonomously execute the business automation action '${actionName}' for task '${targetTaskId}'. Custom params: ${JSON.stringify(payload)}`;
+    
+    const response = await axios.post(`${orchestratorUrl}/api/ai/agent-execute`, {
+      prompt,
+      taskId: targetTaskId
+    }, {
+      headers: {
+        'Authorization': `Bearer ${internalKey}`
+      }
+    });
+
+    if (targetTaskId) {
+      await prisma.task.update({
+        where: { id: targetTaskId },
+        data: { status: 'in-progress' }
+      });
+    }
+
+    res.json({ success: true, data: response.data });
+  } catch (error: any) {
+    logger.error('Failed to trigger Antigravity Agent:', error.message);
+    res.status(500).json({ error: 'Failed to execute Antigravity Agent workflow' });
+  }
+});
+
 export default router;
